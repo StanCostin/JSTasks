@@ -44,7 +44,7 @@ route.put('/projects/update/:_id', (req, res) => {
         Description: req.body.Description,
         Project_code: req.body.Project_code
     };
-    Project.findByIdAndUpdate(req.params._id, { $set: emp }, { new: true }, (err, data) => {
+    Project.findByIdAndUpdate(req.params._id, { $set: prj }, { new: true }, (err, data) => {
         if(!err) {
             res.status(200).json({code: 200, message: 'Project Updated Successfully', updateProject: data})
         } else {

@@ -72,4 +72,5 @@ route.delete('/employees/delete/:_id', (req, res) => {
     });
 });
 
+
 module.exports = route;
