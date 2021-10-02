@@ -2,6 +2,7 @@ const { Router } = require('express');
 const express = require('express');
 const route = express.Router();
 const { Employee } = require('../models/employees_model');
+const { Project } = require('../models/projects_model');
 
 route.get('/employees', (req, res) => {
     Employee.find({}, (err, intel) => {
@@ -10,7 +11,7 @@ route.get('/employees', (req, res) => {
         }catch(err){
             console.log(err);
         }
-    });
+    }).select('-__v');
 });
 
 route.post('/employees/add', (req, res) => {
@@ -23,8 +24,6 @@ route.post('/employees/add', (req, res) => {
         Salary: req.body.Salary,
         Job_Title: req.body.Job_Title
     });
-
-    console.log(emp);
 
     emp.save((err, data) => {
         try {
@@ -72,5 +71,48 @@ route.delete('/employees/delete/:_id', (req, res) => {
     });
 });
 
+//select all the projects to all employees
+
+route.get('/join', (req, res) => {
+    Employee.aggregate(
+        [
+            {
+                $lookup: {
+                    from: 'projects',
+                    localField: 'projects',
+                    foreignField: 'project_id',
+                    as: 'project_id',
+                    
+                }
+            }
+
+        ]
+    ).exec((err, intel) => {
+        console.log(intel);
+        res.json(intel);
+    });
+})
+
+//select one project for each employee
+
+route.get('/join/oneproject', (req, res) => {
+    Employee.aggregate(
+        [
+
+            {
+                $lookup: {
+                    from: 'projects',
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'project_id'
+                }
+            }
+
+        ]
+    ).exec((err, intel) => {
+        console.log(intel);
+        res.json(intel);
+    });
+})
 
 module.exports = route;

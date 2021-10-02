@@ -28,9 +28,7 @@ const Employee = mongoose.model('Employee', {
     Job_Title: {
         type: String,
         required: true
-    },
-
-    project_id: { type: mongoose.Schema.Types.Number, ref: 'Product'}
+    }
 
 }
 );

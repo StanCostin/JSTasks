@@ -25,7 +25,6 @@ route.post('/projects/add', (req, res) => {
 
     prj.save((err, data) => {
         try {
-            console.log(data);
             res.status(200).json({code: 200, message: 'Project Added Successfully', addProject: data})
         } catch(err) {
            console.log(err);
